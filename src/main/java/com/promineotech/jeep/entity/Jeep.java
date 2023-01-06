@@ -1,7 +1,17 @@
 package com.promineotech.jeep.entity;
 
 import java.math.BigDecimal;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Jeep {
   
     private Long modelPK;
@@ -11,7 +21,4 @@ public class Jeep {
     private int wheelSize;
     private BigDecimal basePrice;
   }
-
-
- 
 

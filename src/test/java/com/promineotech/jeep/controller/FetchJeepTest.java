@@ -4,6 +4,8 @@
 package com.promineotech.jeep.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import java.math.BigDecimal;
+import java.util.LinkedList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +35,6 @@ import lombok.Getter;
 class FetchJeepTest{
 
   @Test
-  void test() {
-    fail("Not yet implemented");
-  }
-
   void testThatJeepsAreReturnedWhenAValidModelAndTrimAreSupplied() {
    JeepModel model = JeepModel.WRANGLER;
     String trim = "Sport";
@@ -47,10 +45,42 @@ class FetchJeepTest{
         (uri, HttpMethod.GET, null, new ParameterizedTypeReference<>() {});
     
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    
+    //method for expected list
+    List<Jeep> expected = buildExpected();
+    assertThat(response.getBody()).isEqualTo(expected);         
   }
   
+  /**
+   * @return
+   */
+  private List<Jeep> buildExpected() {
+    List<Jeep> list = new LinkedList<>();
+    
+    //@formatter:off
+    list.add(Jeep.builder()
+              .modelId(JeepModel.WRANGLER)
+              .trimLevel("Sport")
+              .numDoors(2)
+              .wheelSize(17)
+              .basePrice(new BigDecimal("28475.00"))
+              .build());
+    
+    list.add(Jeep.builder()
+        .modelId(JeepModel.WRANGLER)
+        .trimLevel("Sport")
+        .numDoors(4)
+        .wheelSize(17)
+        .basePrice(new BigDecimal("31975.00"))
+        .build());
+
+    //@formatter:on
+    
+    return list;
+  }
+
   @Autowired
-  @Getter //added getter not sure if necessary
+  @Getter 
   private TestRestTemplate restTemplate;
   
   @LocalServerPort
